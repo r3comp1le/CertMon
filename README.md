@@ -14,7 +14,7 @@ pymongo
 
 Start web server
 ```
-cd /CertMon/
+cd CertMon/
 flask run 
 ```
 OR
@@ -22,7 +22,7 @@ OR
 python -m flask run
 ```
 
-Visit http://localhost:5000/config and set you Censys creds
+Visit http://localhost:5000/config and set Censys creds
 
 ### Monitor
 Run `monitor.py` on desired interval to start querying Censys data
