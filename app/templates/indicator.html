@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block jumbo %}
+<script type="text/javascript">
+    function search(ele) {
+        if(event.keyCode == 13) {
+            $.ajax({
+            type: "POST",
+            url: "edit_note",
+            data: {indicator:"{{indicator}}",note:ele.value},
+            async:   false
+        });
+        location.reload();      
+        }
+    }
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Indicator: {{ indicator }}</h1>
+            <hr>
+            {% if type == "IP" %}
+                <a href="https://censys.io/ipv4/{{ indicator }}" target="_blank"><button type="button" class="btn btn-warning btn-xs">Censys</button></a>
+            {% endif %}
+            {% if type == "Cert" %}
+                <a href="https://censys.io/certificates?q={{ indicator }}" target="_blank"><button type="button" class="btn btn-warning btn-xs">Censys</button></a>
+            {% endif %}
+
+            <input type="text" class="form-control" id="note" aria-describedby="note" placeholder="{{ note }}" onkeydown="search(this)" />
+
+            <div id="filter-bar"> </div>
+            <table id='mytable' data-toggle="table" data-classes="table table-hover table-condensed" data-striped="true" data-show-columns="true" data-search="true" data-pagination="true" data-page-size="25" data-sort-name="rule" data-sort-order="asc">
+            <thead>
+            <tr>
+            <th data-field="value" data-sortable="true">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for items in passive %} 
+                <tr>
+                    <td>{{ items }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

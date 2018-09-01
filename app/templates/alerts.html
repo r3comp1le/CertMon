@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block jumbo %}
+
+<script>
+    function archive_alert(id) {
+        $.ajax({
+            type: "POST",
+            url: "arch_alert",
+            data: {id:id},
+            async:   false
+        });
+        location.reload();
+    }
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Alerts: {{ indicator }}</h1>
+            <button class="btn btn-success" type="button" onclick="archive_alert('{{indicator}}')">Archive</button>
+            <div id="filter-bar"> </div>
+            <table id='mytable' data-toggle="table" data-classes="table table-hover table-condensed" data-striped="true" data-show-columns="true" data-search="true" data-pagination="true" data-page-size="25" data-sort-name="rule" data-sort-order="asc">
+            <thead>
+            <tr>
+            <th data-field="date" data-sortable="true">Date</th>
+            <th data-field="value" data-sortable="true">Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for alert in alerts %} 
+                <tr>
+                    <td>{{ alert.date }}</td>
+                    <td>{{ alert.value }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

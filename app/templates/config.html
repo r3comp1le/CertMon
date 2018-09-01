@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+
+{% block jumbo %}
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+        <h1>Configuration</h1>
+        <form  action="add_to_config" method="post" role="form">
+        {% for k, v in config.items() %} 
+        
+            {% if k == 'censys_uid' %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="{{ k }}">Censys UID</span>
+                </div>
+                <input type="text" class="form-control" name="{{ k }}" id="{{ k }}" value="{{ v }}">
+            </div>
+            {% endif %}
+
+            {% if k == 'censys_secret' %}
+            <div class="input-group mb-3">
+                <div class="input-group-prepend">
+                <span class="input-group-text" id="{{ k }}">Censys Secret</span>
+                </div>
+                <input type="text" class="form-control" name="{{ k }}" id="{{ k }}" value="{{ v }}">
+            </div>
+            {% endif %}
+
+        {% endfor %}
+        <button type="submit" class="btn btn-primary">Save</button>
+        </form>
+    </div>
+    </div>
+</div>
+{% endblock %}

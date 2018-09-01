@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block jumbo %}
+<script>
+    function archive_alert(id) {
+        $.ajax({
+            type: "POST",
+            url: "arch_alert",
+            data: {id:id},
+            async:   false
+        });
+    }
+
+</script>
+
+<div class="container">
+    <h1>Alerts</h1>
+    {% if clean %}
+        <div class="alert alert-success" role="alert">
+            <strong>No alerts</strong> Come back later.
+        </div>
+    {% endif %}
+    {% if results is defined %}
+        {% for items in results %} 
+        <div class="card" id="{{items.random}}">
+        <div class="card-body">
+            <h5 class="card-title">{{ loop.index }}) {{items.indicator}}</h5>
+            {% if items.indicator_type == 'IP' %}
+            <p class="card-text">Censys Link: <a href="https://censys.io/ipv4/{{items.indicator}}" target="_blank">{{items.indicator}}</a><br><code>{{items.last_alert}}</code></p>
+            {% endif %}
+
+            {% if items.indicator_type == 'Cert' %}
+            <p class="card-text">Censys Link: <a href="https://censys.io/certificates?q={{items.indicator}}" target="_blank">{{items.indicator}}</a><br><code>{{items.last_alert}}</code></p>
+            {% endif %}
+
+            <p class="card-text"><small class="text-muted">{{items.note}}</small></p>
+            <button class="btn btn-success" type="button" onclick="archive_alert('{{items.indicator}}')">Archive</button>
+            <a href='view_alert?indy={{items.indicator}}' target="_blank"><button type="button" class="open-newmodal btn btn-danger" data-toggle="modal" data-target="#new-modal" >Alerts</button></a>
+        </div>
+        </div>
+        <br>
+        {% endfor %}
+    {% endif %}
+</div>
+
+<nav class="navbar fixed-bottom navbar-expand-sm navbar-dark bg-dark">
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+        {% if account_info is defined %}
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="https://censys.io/account">Quota Reset: {{ account_info.quota.resets_at }}</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="https://censys.io/account">Quota: {{ account_info.quota.used }} / {{ account_info.quota.allowance }} </a>
+        </li>
+        </ul>
+        {% endif %}
+    </div>
+    </nav>
+{% endblock %}

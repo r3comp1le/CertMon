@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+
+{% block jumbo %}
+<script>
+    function delFunc(id) {
+        $.ajax({
+            type: "POST",
+            url: "del_indy",
+            data: {id:id},
+            async:   false
+        });
+        location.reload();
+    }
+
+</script>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Monitoring</h1>
+
+            <button type="button" class="open-newmodal btn btn-danger" data-toggle="modal" data-target="#new-modal" >Add</button>
+
+            <div id="filter-bar"> </div>
+            <table id='mytable' data-toggle="table" data-classes="table table-hover table-condensed" data-striped="true" data-show-columns="true" data-search="true" data-pagination="true" data-page-size="25" data-sort-name="rule" data-sort-order="asc">
+            <thead>
+            <tr>
+            <th data-field="indy" data-sortable="true">Indicator</th>
+            <th data-field="d_added" data-sortable="true">Added</th>
+            <th data-field="d_alert" data-sortable="true">Last Alert</th>
+            <th data-field="d_check" data-sortable="true">Last Checked</th>
+            <th data-field="montior" data-sortable="true">Monitoring</th>
+            <th data-field="note" data-sortable="true">Note</th>
+            <th data-field="delete" data-sortable="false">Delete</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for indy in indicators %} 
+                <tr id="{{ indy.indicator }}">
+                    <td><a href="view_indicator?indy={{ indy.indicator }}&type={{indy.indicator_type}}" target="_blank">{{ indy.indicator }}</a></td>
+                    <td>{{ indy.added }}</td>
+                    <td>{{ indy.last_alert }}</td>
+                    <td>{{ indy.last_checked }}</td>
+                    <td>{{ indy.monitor }}</td>
+                    <td>{{ indy.note }}</td>  
+                    <td><button type="button" class="btn btn-danger btn-xs" title="Delete" onclick='delFunc("{{indy.indicator}}")'><span class="fas fa-times" aria-hidden="true"></span></button></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="new-modal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">New Monitor</h4>
+            </div>
+            
+            <div class="modal-body">
+                <form enctype="multipart/form-data" action="/add_indy" method="POST">
+                    <input type="text" class="form-control" name="indy" id="indy" placeholder="Hash or IP Address">
+                    <input type="text" class="form-control" name="note" id="note" placeholder="Note">
+            </div>
+            
+            <div class="modal-footer">
+                <button class="btn btn-primary" type="submit" name="submit" value="search">Add</button>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+              </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
