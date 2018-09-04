@@ -25,7 +25,8 @@ try:
     client = MongoClient('localhost:27017')
     db = client.certs
 except Exception as e:
-        logger.error(str(e))
+    print "Mongo Connect Error"
+    logger.error(str(e))
 
 @app.route('/')
 @app.route('/index')
