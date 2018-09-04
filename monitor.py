@@ -11,6 +11,7 @@ try:
     client = MongoClient('localhost:27017')
     db = client.certs
 except Exception as e:
+    print "Mongo Connect Error"
     print str(e)
     sys.exit()
 
