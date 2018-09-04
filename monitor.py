@@ -99,12 +99,16 @@ def createAlert(indy,data):
 
 # Get Monitor List
 monitors = db.monitor.find({'monitor': True})
-for mons in monitors:
-    indy = mons['indicator']
-    thedate = strftime("%Y-%m-%d %H:%M", gmtime())
-    if mons['indicator_type'] == "Cert":
-        censys_cert(indy)
-        db.monitor.update({'indicator':indy},{'$set':{'last_checked': thedate}})
-    if mons['indicator_type'] == "IP":
-        censys_ip(indy)
-        db.monitor.update({'indicator':indy},{'$set':{'last_checked': thedate}})
+thecount = monitors.count()
+if thecount == 0:
+    print "No items to monitor"
+else:
+    for mons in monitors:
+        indy = mons['indicator']
+        thedate = strftime("%Y-%m-%d %H:%M", gmtime())
+        if mons['indicator_type'] == "Cert":
+            censys_cert(indy)
+            db.monitor.update({'indicator':indy},{'$set':{'last_checked': thedate}})
+        if mons['indicator_type'] == "IP":
+            censys_ip(indy)
+            db.monitor.update({'indicator':indy},{'$set':{'last_checked': thedate}})
