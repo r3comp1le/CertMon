@@ -3,7 +3,7 @@
 Monitor SSL certificates by hash and IP addresses via Censys data.  Keep a record of findings and alert on new items.
 
 ### Setup
-Make sure Mongo is running
+Install Mongo and make sure it is running
 
 pip install
 ```
